@@ -44,6 +44,7 @@ export const StoryCard = ({
     const [currentSubstoryIndex, setCurrentSubstoryIndex] = useState(0);
     const [progress, setProgress] = useState(0);
     const [isPressed, setIsPressed] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
 
     // Position-based transforms
     const getTransform = () => {
@@ -81,6 +82,11 @@ export const StoryCard = ({
 
     const handleCardMouseLeave = () => {
         setIsPressed(false);
+        setIsHovered(false);
+    };
+
+    const handleCardMouseEnter = () => {
+        setIsHovered(true);
     };
 
     const getZIndex = () => {
@@ -233,6 +239,7 @@ export const StoryCard = ({
             }}
             onMouseDown={handleCardMouseDown}
             onMouseUp={handleCardMouseUp}
+            onMouseEnter={handleCardMouseEnter}
             onMouseLeave={handleCardMouseLeave}
             onTouchStart={handleCardMouseDown}
             onTouchEnd={handleCardMouseUp}
@@ -306,17 +313,17 @@ export const StoryCard = ({
                 {isActive && (
                     <>
                         <div
-                            className='absolute top-0 left-0 right-0 h-20 z-[1] pointer-events-none'
+                            className='absolute top-0 left-0 right-0 h-24 z-[1] pointer-events-none'
                             style={{
                                 background:
-                                    "linear-gradient(0deg, rgba(16, 17, 18, 0) 5.8%, var(--story-background) 65.63%)",
+                                    "linear-gradient(in oklch to bottom, oklch(0.149 0.004 250) 0%, oklch(0.149 0.004 250 / 0.7) 25%, oklch(0.149 0.004 250 / 0.3) 50%, oklch(0.149 0.004 250 / 0.1) 70%, oklch(0.149 0.004 250 / 0) 100%)",
                             }}
                         />
                         <div
-                            className='absolute bottom-0 left-0 right-0 h-20 z-[1] pointer-events-none'
+                            className='absolute bottom-0 left-0 right-0 h-24 z-[1] pointer-events-none'
                             style={{
                                 background:
-                                    "linear-gradient(180deg, rgba(16, 17, 18, 0) 5.8%, var(--story-background) 65.63%)",
+                                    "linear-gradient(in oklch to top, oklch(0.149 0.004 250) 0%, oklch(0.149 0.004 250 / 0.7) 25%, oklch(0.149 0.004 250 / 0.3) 50%, oklch(0.149 0.004 250 / 0.1) 70%, oklch(0.149 0.004 250 / 0) 100%)",
                             }}
                         />
                     </>
@@ -338,7 +345,9 @@ export const StoryCard = ({
                                     {!isCompleted && (
                                         <div
                                             className='h-full w-full bg-white rounded-full origin-left transition-transform duration-100'
-                                            style={{ transform: `scaleX(${currentProgress / 100})` }}
+                                            style={{
+                                                transform: `scaleX(${currentProgress / 100})`,
+                                            }}
                                         />
                                     )}
                                 </div>
@@ -347,12 +356,14 @@ export const StoryCard = ({
                     </div>
                 )}
 
-                {/* Video controls - only show for active story */}
+                {/* Video controls - only show for active story when hovered */}
                 {isActive && (
-                    <div className='absolute top-5 right-4 flex gap-3 z-10'>
+                    <div
+                        className={`absolute top-6 right-3 flex gap-2 z-10 transition-opacity duration-200 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+                    >
                         <button
                             onClick={togglePlayPause}
-                            className='text-white rounded-full p-2'
+                            className='text-white rounded-full p-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]'
                             aria-label={isPlaying ? "Pause video" : "Play video"}
                             title={isPlaying ? "Pause" : "Play"}
                         >
@@ -361,7 +372,7 @@ export const StoryCard = ({
 
                         <button
                             onClick={handleToggleMute}
-                            className='text-white rounded-full p-2'
+                            className='text-white rounded-full p-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]'
                             aria-label={isMuted ? "Unmute video" : "Mute video"}
                             title={isMuted ? "Unmute" : "Mute"}
                         >
