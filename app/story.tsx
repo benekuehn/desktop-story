@@ -69,7 +69,15 @@ export const Story = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
         <dialog
             open={isOpen}
             className='w-dvw h-dvh max-w-none max-h-none m-0 p-0 border-none overflow-hidden'
-            style={{ background: "var(--story-background)" }}
+            style={{
+                background: "var(--story-background)",
+                overscrollBehavior: "contain",
+                paddingTop: "env(safe-area-inset-top)",
+                paddingRight: "env(safe-area-inset-right)",
+                paddingBottom: "env(safe-area-inset-bottom)",
+                paddingLeft: "env(safe-area-inset-left)",
+                boxSizing: "border-box",
+            }}
         >
             {/* Close button */}
             <div className='absolute top-10 right-10 z-50'>
@@ -84,7 +92,7 @@ export const Story = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
             </div>
 
             {/* Story carousel container */}
-            <div className='flex items-center justify-center h-screen relative'>
+            <div className='flex items-center justify-center h-full relative'>
                 {/* Render all visible story cards */}
                 {getVisibleStories().map(({ story, position, startAtLastSubstory }) => (
                     <StoryCard

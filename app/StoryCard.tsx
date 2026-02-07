@@ -224,7 +224,7 @@ export const StoryCard = ({
 
     return (
         <div
-            className={`absolute w-[390px] h-[43.75rem] transition-all duration-700 ease-in-out ${isClickable ? "cursor-pointer" : ""}`}
+            className={`absolute w-[390px] h-[43.75rem] transition-transform duration-700 ease-in-out ${isClickable ? "cursor-pointer" : ""}`}
             style={{
                 transform: getTransform(),
                 zIndex: getZIndex(),
@@ -337,8 +337,8 @@ export const StoryCard = ({
                                 >
                                     {!isCompleted && (
                                         <div
-                                            className='h-full bg-white rounded-full transition-all duration-100'
-                                            style={{ width: `${currentProgress}%` }}
+                                            className='h-full w-full bg-white rounded-full origin-left transition-transform duration-100'
+                                            style={{ transform: `scaleX(${currentProgress / 100})` }}
                                         />
                                     )}
                                 </div>
@@ -352,7 +352,7 @@ export const StoryCard = ({
                     <div className='absolute top-5 right-4 flex gap-3 z-10'>
                         <button
                             onClick={togglePlayPause}
-                            className='text-white rounded-full p-2 hover:bg-black/70 transition'
+                            className='text-white rounded-full p-2'
                             aria-label={isPlaying ? "Pause video" : "Play video"}
                             title={isPlaying ? "Pause" : "Play"}
                         >
@@ -361,7 +361,7 @@ export const StoryCard = ({
 
                         <button
                             onClick={handleToggleMute}
-                            className='text-white rounded-full p-2 hover:bg-black/70 transition'
+                            className='text-white rounded-full p-2'
                             aria-label={isMuted ? "Unmute video" : "Mute video"}
                             title={isMuted ? "Unmute" : "Mute"}
                         >
