@@ -61,23 +61,35 @@ const stories = [
   },
 ];
 
+type VisibleStory = {
+  story: (typeof stories)[number];
+  position: -2 | -1 | 0 | 1 | 2;
+  startAtLastSubstory?: boolean;
+};
+
 export const Story = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMuted, setIsMuted] = useState(true);
   const [navigationDirection, setNavigationDirection] = useState<'forward' | 'backward' | null>(null);
 
   const goNextStory = () => {
-    if (currentIndex < stories.length - 1) {
-      setNavigationDirection('forward');
-      setCurrentIndex(currentIndex + 1);
-    }
+    setCurrentIndex((index) => {
+      if (index < stories.length - 1) {
+        setNavigationDirection('forward');
+        return index + 1;
+      }
+      return index;
+    });
   };
 
   const goPreviousStory = () => {
-    if (currentIndex > 0) {
-      setNavigationDirection('backward');
-      setCurrentIndex(currentIndex - 1);
-    }
+    setCurrentIndex((index) => {
+      if (index > 0) {
+        setNavigationDirection('backward');
+        return index - 1;
+      }
+      return index;
+    });
   };
 
   const handleStoryEnded = () => {
@@ -85,12 +97,12 @@ export const Story = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
   };
 
   const toggleMute = () => {
-    setIsMuted(!isMuted);
+    setIsMuted((muted) => !muted);
   };
 
   // Calculate which stories to render and their positions
   const getVisibleStories = () => {
-    const visible: Array<{ story: typeof stories[0]; position: -2 | -1 | 0 | 1 | 2 }> = [];
+    const visible: VisibleStory[] = [];
 
     for (let offset = -2; offset <= 2; offset++) {
       const index = currentIndex + offset;
@@ -124,6 +136,8 @@ export const Story = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
         <button
           onClick={onClose}
           className="text-white bg-black/50 rounded-full p-2 hover:bg-black/70 transition"
+          aria-label="Close story viewer"
+          title="Close"
         >
           <X size={24} weight="bold" />
         </button>
