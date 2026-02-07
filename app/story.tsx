@@ -2,133 +2,10 @@
 import { useState } from "react";
 import { X } from "@phosphor-icons/react";
 import { StoryCard } from "./StoryCard";
-
-// Sample story data - each story can have multiple substories
-const stories = [
-    {
-        id: 1,
-        substories: [
-            {
-                id: 1,
-                videoUrl:
-                    "https://videos.ctfassets.net/7y1g9xrc1u6a/5JgjXtPICQEobAh8Cw8UjY/39502c6ed52abbed8baced0a13e9c0d0/COD-442_Bausparvertraege_angedreht_bekommen_CDU-Renten-Rebell_Reddig_Ist_die_Rente_noch_zu_retten_Podcast_AssetClass_S01E48.webm",
-            },
-        ],
-    },
-    {
-        id: 2,
-        substories: [
-            {
-                id: 1,
-                videoUrl:
-                    "https://videos.ctfassets.net/7y1g9xrc1u6a/5JgjXtPICQEobAh8Cw8UjY/39502c6ed52abbed8baced0a13e9c0d0/COD-442_Bausparvertraege_angedreht_bekommen_CDU-Renten-Rebell_Reddig_Ist_die_Rente_noch_zu_retten_Podcast_AssetClass_S01E48.webm",
-            },
-            {
-                id: 2,
-                videoUrl:
-                    "https://videos.ctfassets.net/7y1g9xrc1u6a/5JgjXtPICQEobAh8Cw8UjY/39502c6ed52abbed8baced0a13e9c0d0/COD-442_Bausparvertraege_angedreht_bekommen_CDU-Renten-Rebell_Reddig_Ist_die_Rente_noch_zu_retten_Podcast_AssetClass_S01E48.webm",
-            },
-            {
-                id: 3,
-                videoUrl:
-                    "https://videos.ctfassets.net/7y1g9xrc1u6a/5JgjXtPICQEobAh8Cw8UjY/39502c6ed52abbed8baced0a13e9c0d0/COD-442_Bausparvertraege_angedreht_bekommen_CDU-Renten-Rebell_Reddig_Ist_die_Rente_noch_zu_retten_Podcast_AssetClass_S01E48.webm",
-            },
-            {
-                id: 4,
-                videoUrl:
-                    "https://videos.ctfassets.net/7y1g9xrc1u6a/5JgjXtPICQEobAh8Cw8UjY/39502c6ed52abbed8baced0a13e9c0d0/COD-442_Bausparvertraege_angedreht_bekommen_CDU-Renten-Rebell_Reddig_Ist_die_Rente_noch_zu_retten_Podcast_AssetClass_S01E48.webm",
-            },
-        ],
-    },
-    {
-        id: 3,
-        substories: [
-            {
-                id: 1,
-                videoUrl:
-                    "https://videos.ctfassets.net/7y1g9xrc1u6a/5JgjXtPICQEobAh8Cw8UjY/39502c6ed52abbed8baced0a13e9c0d0/COD-442_Bausparvertraege_angedreht_bekommen_CDU-Renten-Rebell_Reddig_Ist_die_Rente_noch_zu_retten_Podcast_AssetClass_S01E48.webm",
-            },
-            {
-                id: 2,
-                videoUrl:
-                    "https://videos.ctfassets.net/7y1g9xrc1u6a/5JgjXtPICQEobAh8Cw8UjY/39502c6ed52abbed8baced0a13e9c0d0/COD-442_Bausparvertraege_angedreht_bekommen_CDU-Renten-Rebell_Reddig_Ist_die_Rente_noch_zu_retten_Podcast_AssetClass_S01E48.webm",
-            },
-            {
-                id: 3,
-                videoUrl:
-                    "https://videos.ctfassets.net/7y1g9xrc1u6a/5JgjXtPICQEobAh8Cw8UjY/39502c6ed52abbed8baced0a13e9c0d0/COD-442_Bausparvertraege_angedreht_bekommen_CDU-Renten-Rebell_Reddig_Ist_die_Rente_noch_zu_retten_Podcast_AssetClass_S01E48.webm",
-            },
-            {
-                id: 4,
-                videoUrl:
-                    "https://videos.ctfassets.net/7y1g9xrc1u6a/5JgjXtPICQEobAh8Cw8UjY/39502c6ed52abbed8baced0a13e9c0d0/COD-442_Bausparvertraege_angedreht_bekommen_CDU-Renten-Rebell_Reddig_Ist_die_Rente_noch_zu_retten_Podcast_AssetClass_S01E48.webm",
-            },
-        ],
-    },
-    {
-        id: 4,
-        substories: [
-            {
-                id: 1,
-                videoUrl:
-                    "https://videos.ctfassets.net/7y1g9xrc1u6a/5JgjXtPICQEobAh8Cw8UjY/39502c6ed52abbed8baced0a13e9c0d0/COD-442_Bausparvertraege_angedreht_bekommen_CDU-Renten-Rebell_Reddig_Ist_die_Rente_noch_zu_retten_Podcast_AssetClass_S01E48.webm",
-            },
-            {
-                id: 2,
-                videoUrl:
-                    "https://videos.ctfassets.net/7y1g9xrc1u6a/5JgjXtPICQEobAh8Cw8UjY/39502c6ed52abbed8baced0a13e9c0d0/COD-442_Bausparvertraege_angedreht_bekommen_CDU-Renten-Rebell_Reddig_Ist_die_Rente_noch_zu_retten_Podcast_AssetClass_S01E48.webm",
-            },
-        ],
-    },
-    {
-        id: 5,
-        substories: [
-            {
-                id: 1,
-                videoUrl:
-                    "https://videos.ctfassets.net/7y1g9xrc1u6a/5JgjXtPICQEobAh8Cw8UjY/39502c6ed52abbed8baced0a13e9c0d0/COD-442_Bausparvertraege_angedreht_bekommen_CDU-Renten-Rebell_Reddig_Ist_die_Rente_noch_zu_retten_Podcast_AssetClass_S01E48.webm",
-            },
-            {
-                id: 2,
-                videoUrl:
-                    "https://videos.ctfassets.net/7y1g9xrc1u6a/5JgjXtPICQEobAh8Cw8UjY/39502c6ed52abbed8baced0a13e9c0d0/COD-442_Bausparvertraege_angedreht_bekommen_CDU-Renten-Rebell_Reddig_Ist_die_Rente_noch_zu_retten_Podcast_AssetClass_S01E48.webm",
-            },
-            {
-                id: 3,
-                videoUrl:
-                    "https://videos.ctfassets.net/7y1g9xrc1u6a/5JgjXtPICQEobAh8Cw8UjY/39502c6ed52abbed8baced0a13e9c0d0/COD-442_Bausparvertraege_angedreht_bekommen_CDU-Renten-Rebell_Reddig_Ist_die_Rente_noch_zu_retten_Podcast_AssetClass_S01E48.webm",
-            },
-        ],
-    },
-    {
-        id: 6,
-        substories: [
-            {
-                id: 1,
-                videoUrl:
-                    "https://videos.ctfassets.net/7y1g9xrc1u6a/5JgjXtPICQEobAh8Cw8UjY/39502c6ed52abbed8baced0a13e9c0d0/COD-442_Bausparvertraege_angedreht_bekommen_CDU-Renten-Rebell_Reddig_Ist_die_Rente_noch_zu_retten_Podcast_AssetClass_S01E48.webm",
-            },
-            {
-                id: 2,
-                videoUrl:
-                    "https://videos.ctfassets.net/7y1g9xrc1u6a/5JgjXtPICQEobAh8Cw8UjY/39502c6ed52abbed8baced0a13e9c0d0/COD-442_Bausparvertraege_angedreht_bekommen_CDU-Renten-Rebell_Reddig_Ist_die_Rente_noch_zu_retten_Podcast_AssetClass_S01E48.webm",
-            },
-            {
-                id: 3,
-                videoUrl:
-                    "https://videos.ctfassets.net/7y1g9xrc1u6a/5JgjXtPICQEobAh8Cw8UjY/39502c6ed52abbed8baced0a13e9c0d0/COD-442_Bausparvertraege_angedreht_bekommen_CDU-Renten-Rebell_Reddig_Ist_die_Rente_noch_zu_retten_Podcast_AssetClass_S01E48.webm",
-            },
-            {
-                id: 4,
-                videoUrl:
-                    "https://videos.ctfassets.net/7y1g9xrc1u6a/5JgjXtPICQEobAh8Cw8UjY/39502c6ed52abbed8baced0a13e9c0d0/COD-442_Bausparvertraege_angedreht_bekommen_CDU-Renten-Rebell_Reddig_Ist_die_Rente_noch_zu_retten_Podcast_AssetClass_S01E48.webm",
-            },
-        ],
-    },
-];
+import { stories, type Story as StoryType } from "./storiesData";
 
 type VisibleStory = {
-    story: (typeof stories)[number];
+    story: StoryType;
     position: -3 | -2 | -1 | 0 | 1 | 2 | 3;
     startAtLastSubstory?: boolean;
 };
@@ -191,13 +68,8 @@ export const Story = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
     return (
         <dialog
             open={isOpen}
-            className='
-        w-dvw h-dvh
-        max-w-none max-h-none
-        m-0 p-0
-        bg-black
-        border-none
-      '
+            className='w-dvw h-dvh max-w-none max-h-none m-0 p-0 border-none'
+            style={{ background: "var(--story-background)" }}
         >
             {/* Close button */}
             <div className='absolute top-10 right-10 z-50'>

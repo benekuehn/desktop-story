@@ -8,16 +8,7 @@ import {
     ArrowLeftIcon,
     ArrowRightIcon,
 } from "@phosphor-icons/react";
-
-type Substory = {
-    id: number;
-    videoUrl: string;
-};
-
-type Story = {
-    id: number;
-    substories: Substory[];
-};
+import { type Story } from "./storiesData";
 
 type StoryCardProps = {
     story: Story;
@@ -216,12 +207,8 @@ export const StoryCard = ({
             {isActive && showPreviousButton && (
                 <button
                     onClick={handlePrevious}
-                    className='absolute top-1/2 z-10 text-white rounded-full w-8 h-8 flex items-center justify-center animate-nav-button'
-                    style={{
-                        left: "-84px",
-                        background: "rgba(24, 26, 27, 1)",
-                        border: "1px solid rgba(255, 255, 255, 0.05)",
-                    }}
+                    className='absolute top-1/2 z-10 text-white rounded-full w-8 h-8 flex items-center justify-center animate-nav-button nav-button'
+                    style={{ left: "-84px" }}
                     aria-label='Previous'
                     title='Previous'
                 >
@@ -232,12 +219,8 @@ export const StoryCard = ({
             {isActive && showNextButton && (
                 <button
                     onClick={handleNext}
-                    className='absolute top-1/2 z-10 text-white rounded-full w-8 h-8 flex items-center justify-center animate-nav-button'
-                    style={{
-                        right: "-84px",
-                        background: "rgba(24, 26, 27, 1)",
-                        border: "1px solid rgba(255, 255, 255, 0.05)",
-                    }}
+                    className='absolute top-1/2 z-10 text-white rounded-full w-8 h-8 flex items-center justify-center animate-nav-button nav-button'
+                    style={{ right: "-84px" }}
                     aria-label='Next'
                     title='Next'
                 >
@@ -275,14 +258,14 @@ export const StoryCard = ({
                             className='absolute top-0 left-0 right-0 h-20 z-[1] pointer-events-none'
                             style={{
                                 background:
-                                    "linear-gradient(0deg, rgba(16, 17, 18, 0) 5.8%, #101112 65.63%)",
+                                    "linear-gradient(0deg, rgba(16, 17, 18, 0) 5.8%, var(--story-background) 65.63%)",
                             }}
                         />
                         <div
                             className='absolute bottom-0 left-0 right-0 h-20 z-[1] pointer-events-none'
                             style={{
                                 background:
-                                    "linear-gradient(180deg, rgba(16, 17, 18, 0) 5.8%, #101112 65.63%)",
+                                    "linear-gradient(180deg, rgba(16, 17, 18, 0) 5.8%, var(--story-background) 65.63%)",
                             }}
                         />
                     </>
