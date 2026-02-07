@@ -35,7 +35,7 @@ export const useStoryCard = (): StoryCardContextValue => {
         throw new Error("useStoryCard must be used within a StoryCard.Provider");
     }
     return context;
-}
+};
 
 // ============================================================================
 // Utility Functions
@@ -62,14 +62,14 @@ const getTransform = (position: StoryCardPosition, isPressed: boolean): string =
         return baseTransform.replace("scale(0.6)", "scale(0.45)");
     }
     return baseTransform;
-}
+};
 
 /**
  * Calculate z-index based on position (closer to center = higher).
  */
 const getZIndex = (position: StoryCardPosition): number => {
     return 3 - Math.abs(position);
-}
+};
 
 // ============================================================================
 // Provider
@@ -255,4 +255,4 @@ export const StoryCardProvider = ({
     );
 
     return <StoryCardContext value={contextValue}>{children}</StoryCardContext>;
-}
+};

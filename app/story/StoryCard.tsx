@@ -57,7 +57,7 @@ const Video = ({ className = "absolute inset-0 w-full h-full object-cover" }: Vi
             onCanPlay={handleCanPlay}
         />
     );
-}
+};
 
 // ============================================================================
 // Click Overlay Component
@@ -90,7 +90,7 @@ const ClickOverlay = () => {
             aria-label={isPlaying ? "Pause video" : "Play video"}
         />
     );
-}
+};
 
 // ============================================================================
 // Overlay Components
@@ -112,7 +112,7 @@ const InactiveOverlay = () => {
             }}
         />
     );
-}
+};
 
 /**
  * Gradient overlays for active stories (top and bottom).
@@ -139,7 +139,7 @@ const GradientOverlays = () => {
             />
         </>
     );
-}
+};
 
 // ============================================================================
 // Frame Component
@@ -207,7 +207,7 @@ const Frame = ({ children }: FrameProps) => {
             <div className='relative w-full h-full overflow-hidden'>{children}</div>
         </div>
     );
-}
+};
 
 // ============================================================================
 // Default Layout Component
@@ -235,7 +235,7 @@ const DefaultLayout = () => {
             <VideoControls />
         </Frame>
     );
-}
+};
 
 // ============================================================================
 // Main StoryCard Component
@@ -272,7 +272,7 @@ const StoryCardRoot = (props: StoryCardProps) => {
             <DefaultLayout />
         </StoryCardProvider>
     );
-}
+};
 
 // ============================================================================
 // Compound Component Export

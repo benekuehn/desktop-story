@@ -35,7 +35,7 @@ const ControlButton = ({ onClick, ariaLabel, title, children }: ControlButtonPro
             {children}
         </button>
     );
-}
+};
 
 // ============================================================================
 // Play/Pause Button
@@ -71,7 +71,7 @@ export const PlayPauseButton = ({ size = 24 }: PlayPauseButtonProps) => {
             )}
         </ControlButton>
     );
-}
+};
 
 // ============================================================================
 // Mute Button
@@ -107,7 +107,7 @@ export const MuteButton = ({ size = 24 }: MuteButtonProps) => {
             )}
         </ControlButton>
     );
-}
+};
 
 // ============================================================================
 // Video Controls
@@ -155,4 +155,4 @@ export const VideoControls = ({
             {showMute && <MuteButton size={iconSize} />}
         </div>
     );
-}
+};

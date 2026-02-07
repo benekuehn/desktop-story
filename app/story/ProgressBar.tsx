@@ -39,7 +39,7 @@ const ProgressSegment = ({ isCompleted, isCurrent, progress }: ProgressSegmentPr
             )}
         </div>
     );
-}
+};
 
 // ============================================================================
 // Progress Bar
@@ -82,4 +82,4 @@ export const ProgressBar = ({ className = "mt-4 mx-2" }: ProgressBarProps) => {
             ))}
         </div>
     );
-}
+};

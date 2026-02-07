@@ -41,7 +41,7 @@ const NavButton = ({ onClick, ariaLabel, position, children }: NavButtonProps) =
             {children}
         </button>
     );
-}
+};
 
 // ============================================================================
 // Previous Button
@@ -72,7 +72,7 @@ export const PreviousButton = ({ iconSize = 16 }: PreviousButtonProps) => {
             <ArrowLeftIcon size={iconSize} weight='bold' />
         </NavButton>
     );
-}
+};
 
 // ============================================================================
 // Next Button
@@ -103,7 +103,7 @@ export const NextButton = ({ iconSize = 16 }: NextButtonProps) => {
             <ArrowRightIcon size={iconSize} weight='bold' />
         </NavButton>
     );
-}
+};
 
 // ============================================================================
 // Navigation Buttons (Combined)
@@ -130,4 +130,4 @@ export const NavigationButtons = ({ iconSize = 16 }: NavigationButtonsProps) => 
             <NextButton iconSize={iconSize} />
         </>
     );
-}
+};

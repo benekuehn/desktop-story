@@ -191,4 +191,4 @@ export const useVideoPlayback = ({
             reset,
         },
     };
-}
+};
