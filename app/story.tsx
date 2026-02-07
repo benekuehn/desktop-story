@@ -100,6 +100,13 @@ export const Story = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                         onGoNext={goNextStory}
                         canGoPrevious={currentIndex > 0}
                         canGoNext={currentIndex < stories.length - 1}
+                        onCardClick={
+                            position === -1
+                                ? goPreviousStory
+                                : position === 1
+                                  ? goNextStory
+                                  : undefined
+                        }
                     />
                 ))}
             </div>

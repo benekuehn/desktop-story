@@ -22,6 +22,7 @@ type StoryCardProps = {
     onGoNext?: () => void;
     canGoPrevious?: boolean;
     canGoNext?: boolean;
+    onCardClick?: () => void;
 };
 
 export const StoryCard = ({
@@ -36,11 +37,13 @@ export const StoryCard = ({
     onGoNext,
     canGoPrevious = true,
     canGoNext = true,
+    onCardClick,
 }: StoryCardProps) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentSubstoryIndex, setCurrentSubstoryIndex] = useState(0);
     const [progress, setProgress] = useState(0);
+    const [isPressed, setIsPressed] = useState(false);
 
     // Position-based transforms
     const getTransform = () => {
@@ -53,7 +56,31 @@ export const StoryCard = ({
             "2": "translateX(722px) scale(0.6)",
             "3": "translateX(996px) scale(0.6)",
         };
-        return transforms[position.toString() as keyof typeof transforms];
+        const baseTransform = transforms[position.toString() as keyof typeof transforms];
+
+        // Apply pressed scale effect for adjacent cards
+        if (!isActive && isPressed && (position === -1 || position === 1)) {
+            return baseTransform.replace("scale(0.6)", "scale(0.45)");
+        }
+        return baseTransform;
+    };
+
+    // Handle card click for non-active stories
+    const handleCardMouseDown = () => {
+        if (isActive || (position !== -1 && position !== 1)) return;
+        setIsPressed(true);
+    };
+
+    const handleCardMouseUp = () => {
+        if (!isPressed) return;
+        setIsPressed(false);
+        if (onCardClick) {
+            onCardClick();
+        }
+    };
+
+    const handleCardMouseLeave = () => {
+        setIsPressed(false);
     };
 
     const getZIndex = () => {
@@ -193,15 +220,22 @@ export const StoryCard = ({
     // Show next button if there's a next substory OR a next story
     const showNextButton = currentSubstoryIndex < story.substories.length - 1 || canGoNext;
 
+    const isClickable = !isActive && (position === -1 || position === 1);
+
     return (
         <div
-            className='absolute w-[390px] h-[43.75rem] transition-all duration-700 ease-in-out'
+            className={`absolute w-[390px] h-[43.75rem] transition-all duration-700 ease-in-out ${isClickable ? "cursor-pointer" : ""}`}
             style={{
                 transform: getTransform(),
                 zIndex: getZIndex(),
                 left: "50%",
                 marginLeft: "-195px",
             }}
+            onMouseDown={handleCardMouseDown}
+            onMouseUp={handleCardMouseUp}
+            onMouseLeave={handleCardMouseLeave}
+            onTouchStart={handleCardMouseDown}
+            onTouchEnd={handleCardMouseUp}
         >
             {/* Navigation buttons - attached to the card, scale with it */}
             {isActive && showPreviousButton && (
