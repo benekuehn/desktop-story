@@ -98,15 +98,17 @@ export const StoryCard = ({
     // Reset substory index when story changes or becomes inactive
     useEffect(() => {
         if (!isActive) {
-            // When becoming inactive, reset to appropriate substory
-            if (startAtLastSubstory) {
+            // When becoming inactive, show appropriate substory based on position
+            // Left of active (previous stories) = show last substory (where we left off)
+            // Right of active (next stories) = show first substory (where we'd start)
+            if (position < 0) {
                 setCurrentSubstoryIndex(story.substories.length - 1);
             } else {
                 setCurrentSubstoryIndex(0);
             }
             setProgress(0);
         }
-    }, [isActive, story.id, startAtLastSubstory, story.substories.length]);
+    }, [isActive, story.id, position, story.substories.length]);
 
     // Initialize to last substory if navigating backwards
     useEffect(() => {
