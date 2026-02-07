@@ -28,7 +28,7 @@ interface StoryProps {
  * <Story isOpen={isStoryOpen} onClose={() => setIsStoryOpen(false)} />
  * ```
  */
-export const Story = ({ isOpen, onClose }: StoryProps) => {
+export const StoryViewer = ({ isOpen, onClose }: StoryProps) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isMuted, setIsMuted] = useState(true);
     const [navigationDirection, setNavigationDirection] = useState<"forward" | "backward" | null>(
