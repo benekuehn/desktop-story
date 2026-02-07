@@ -1,13 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import {
-    Play,
-    Pause,
-    SpeakerHigh,
-    SpeakerSlash,
-    CaretLeft,
-    CaretRight,
-} from "@phosphor-icons/react";
+import { Play, Pause, SpeakerHigh, SpeakerSlash } from "@phosphor-icons/react";
 
 type Substory = {
     id: number;
@@ -21,13 +14,11 @@ type Story = {
 
 type StoryCardProps = {
     story: Story;
-    position: -2 | -1 | 0 | 1 | 2;
+    position: -3 | -2 | -1 | 0 | 1 | 2 | 3;
     isActive: boolean;
     isMuted: boolean;
     onToggleMute: () => void;
     onEnded?: () => void;
-    onGoNext?: () => void;
-    onGoPrevious?: () => void;
     startAtLastSubstory?: boolean;
 };
 
@@ -38,8 +29,6 @@ export const StoryCard = ({
     isMuted,
     onToggleMute,
     onEnded,
-    onGoNext,
-    onGoPrevious,
     startAtLastSubstory,
 }: StoryCardProps) => {
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -50,11 +39,13 @@ export const StoryCard = ({
     // Position-based transforms
     const getTransform = () => {
         const transforms = {
-            "-2": "translateX(-800px) scale(0.7)",
-            "-1": "translateX(-450px) scale(0.7)",
+            "-3": "translateX(-1094px) scale(0.7)",
+            "-2": "translateX(-781px) scale(0.7)",
+            "-1": "translateX(-468px) scale(0.7)",
             "0": "translateX(0) scale(1)",
-            "1": "translateX(450px) scale(0.7)",
-            "2": "translateX(800px) scale(0.7)",
+            "1": "translateX(468px) scale(0.7)",
+            "2": "translateX(781px) scale(0.7)",
+            "3": "translateX(1094px) scale(0.7)",
         };
         return transforms[position.toString() as keyof typeof transforms];
     };
@@ -167,49 +158,14 @@ export const StoryCard = ({
         onToggleMute();
     };
 
-    const handleNext = () => {
-        if (!isActive) return;
-
-        // Check if there are more substories in current story
-        if (currentSubstoryIndex < story.substories.length - 1) {
-            // Go to next substory
-            setCurrentSubstoryIndex(currentSubstoryIndex + 1);
-            setProgress(0);
-        } else {
-            // Go to next story
-            if (onGoNext) {
-                onGoNext();
-            }
-        }
-    };
-
-    const handlePrevious = () => {
-        if (!isActive) return;
-
-        // Check if there are previous substories in current story
-        if (currentSubstoryIndex > 0) {
-            // Go to previous substory
-            setCurrentSubstoryIndex(currentSubstoryIndex - 1);
-            setProgress(0);
-        } else {
-            // Go to previous story
-            if (onGoPrevious) {
-                onGoPrevious();
-            }
-        }
-    };
-
-    const isAtFirstSubstory = currentSubstoryIndex === 0;
-    const isAtLastSubstory = currentSubstoryIndex === story.substories.length - 1;
-
     return (
         <div
-            className='absolute w-[23.75rem] h-[43.75rem] overflow-hidden transition-all duration-700 ease-in-out'
+            className='absolute w-[390px] h-[43.75rem] overflow-hidden transition-all duration-700 ease-in-out'
             style={{
                 transform: getTransform(),
                 zIndex: getZIndex(),
                 left: "50%",
-                marginLeft: "-11.875rem", // -w-95/2 to center
+                marginLeft: "-195px",
             }}
         >
             {/* Video background */}
@@ -222,6 +178,36 @@ export const StoryCard = ({
                 className='absolute inset-0 w-full h-full object-cover'
                 src={currentSubstory.videoUrl}
             />
+
+            {/* Dark overlay for non-active stories */}
+            {!isActive && (
+                <div
+                    className='absolute inset-0 z-[1] pointer-events-none'
+                    style={{
+                        background: "var(--background-backdrop, rgba(16, 17, 18, 0.4))",
+                    }}
+                />
+            )}
+
+            {/* Gradient overlays - only show for active story */}
+            {isActive && (
+                <>
+                    <div
+                        className='absolute top-0 left-0 right-0 h-20 z-[1] pointer-events-none'
+                        style={{
+                            background:
+                                "linear-gradient(0deg, rgba(16, 17, 18, 0) 5.8%, #101112 65.63%)",
+                        }}
+                    />
+                    <div
+                        className='absolute bottom-0 left-0 right-0 h-20 z-[1] pointer-events-none'
+                        style={{
+                            background:
+                                "linear-gradient(180deg, rgba(16, 17, 18, 0) 5.8%, #101112 65.63%)",
+                        }}
+                    />
+                </>
+            )}
 
             {/* Progress bars - only show for active story */}
             {isActive && (
@@ -271,30 +257,6 @@ export const StoryCard = ({
                 </div>
             )}
 
-            {/* Navigation buttons - only show for active story */}
-            {isActive && (
-                <>
-                    <button
-                        onClick={handlePrevious}
-                        disabled={isAtFirstSubstory && !onGoPrevious}
-                        className='absolute left-4 top-1/2 -translate-y-1/2 z-10 text-white bg-black/50 rounded-full p-3 hover:bg-black/70 transition disabled:opacity-30 disabled:cursor-not-allowed'
-                        aria-label='Previous story'
-                        title='Previous'
-                    >
-                        <CaretLeft size={32} weight='bold' />
-                    </button>
-
-                    <button
-                        onClick={handleNext}
-                        disabled={isAtLastSubstory && !onGoNext}
-                        className='absolute right-4 top-1/2 -translate-y-1/2 z-10 text-white bg-black/50 rounded-full p-3 hover:bg-black/70 transition disabled:opacity-30 disabled:cursor-not-allowed'
-                        aria-label='Next story'
-                        title='Next'
-                    >
-                        <CaretRight size={32} weight='bold' />
-                    </button>
-                </>
-            )}
         </div>
     );
 };
