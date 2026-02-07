@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { X, CaretLeft, CaretRight } from "@phosphor-icons/react";
+import { X } from "@phosphor-icons/react";
 import { StoryCard } from "./StoryCard";
 
 // Sample story data - each story can have multiple substories
@@ -224,31 +224,12 @@ export const Story = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                         onToggleMute={toggleMute}
                         onEnded={handleStoryEnded}
                         startAtLastSubstory={startAtLastSubstory}
+                        onGoPrevious={goPreviousStory}
+                        onGoNext={goNextStory}
+                        canGoPrevious={currentIndex > 0}
+                        canGoNext={currentIndex < stories.length - 1}
                     />
                 ))}
-
-                {/* Navigation buttons - positioned between cards */}
-                <button
-                    onClick={goPreviousStory}
-                    disabled={currentIndex === 0}
-                    className='absolute top-1/2 -translate-y-1/2 z-10 text-white bg-black/50 rounded-full p-3 hover:bg-black/70 transition disabled:opacity-30 disabled:cursor-not-allowed'
-                    style={{ left: "calc(50% - 291px)" }}
-                    aria-label='Previous story'
-                    title='Previous'
-                >
-                    <CaretLeft size={32} weight='bold' />
-                </button>
-
-                <button
-                    onClick={goNextStory}
-                    disabled={currentIndex === stories.length - 1}
-                    className='absolute top-1/2 -translate-y-1/2 z-10 text-white bg-black/50 rounded-full p-3 hover:bg-black/70 transition disabled:opacity-30 disabled:cursor-not-allowed'
-                    style={{ left: "calc(50% + 235px)" }}
-                    aria-label='Next story'
-                    title='Next'
-                >
-                    <CaretRight size={32} weight='bold' />
-                </button>
             </div>
         </dialog>
     );

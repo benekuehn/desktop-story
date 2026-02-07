@@ -1,6 +1,13 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Play, Pause, SpeakerHigh, SpeakerSlash } from "@phosphor-icons/react";
+import {
+    Play,
+    Pause,
+    SpeakerHigh,
+    SpeakerSlash,
+    ArrowLeftIcon,
+    ArrowRightIcon,
+} from "@phosphor-icons/react";
 
 type Substory = {
     id: number;
@@ -20,6 +27,10 @@ type StoryCardProps = {
     onToggleMute: () => void;
     onEnded?: () => void;
     startAtLastSubstory?: boolean;
+    onGoPrevious?: () => void;
+    onGoNext?: () => void;
+    canGoPrevious?: boolean;
+    canGoNext?: boolean;
 };
 
 export const StoryCard = ({
@@ -30,6 +41,10 @@ export const StoryCard = ({
     onToggleMute,
     onEnded,
     startAtLastSubstory,
+    onGoPrevious,
+    onGoNext,
+    canGoPrevious = true,
+    canGoNext = true,
 }: StoryCardProps) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -158,9 +173,38 @@ export const StoryCard = ({
         onToggleMute();
     };
 
+    const handlePrevious = () => {
+        if (!isActive) return;
+        if (currentSubstoryIndex > 0) {
+            // Go to previous substory
+            setCurrentSubstoryIndex(currentSubstoryIndex - 1);
+            setProgress(0);
+        } else if (onGoPrevious) {
+            // Go to previous story
+            onGoPrevious();
+        }
+    };
+
+    const handleNext = () => {
+        if (!isActive) return;
+        if (currentSubstoryIndex < story.substories.length - 1) {
+            // Go to next substory
+            setCurrentSubstoryIndex(currentSubstoryIndex + 1);
+            setProgress(0);
+        } else if (onGoNext) {
+            // Go to next story
+            onGoNext();
+        }
+    };
+
+    // Show previous button if there's a previous substory OR a previous story
+    const showPreviousButton = currentSubstoryIndex > 0 || canGoPrevious;
+    // Show next button if there's a next substory OR a next story
+    const showNextButton = currentSubstoryIndex < story.substories.length - 1 || canGoNext;
+
     return (
         <div
-            className='absolute w-[390px] h-[43.75rem] overflow-hidden transition-all duration-700 ease-in-out'
+            className='absolute w-[390px] h-[43.75rem] transition-all duration-700 ease-in-out'
             style={{
                 transform: getTransform(),
                 zIndex: getZIndex(),
@@ -168,94 +212,130 @@ export const StoryCard = ({
                 marginLeft: "-195px",
             }}
         >
-            {/* Video background */}
-            <video
-                ref={videoRef}
-                key={currentSubstory.id}
-                loop={false}
-                muted={isMuted}
-                playsInline
-                className='absolute inset-0 w-full h-full object-cover'
-                src={currentSubstory.videoUrl}
-            />
-
-            {/* Dark overlay for non-active stories */}
-            {!isActive && (
-                <div
-                    className='absolute inset-0 z-[1] pointer-events-none'
+            {/* Navigation buttons - attached to the card, scale with it */}
+            {isActive && showPreviousButton && (
+                <button
+                    onClick={handlePrevious}
+                    className='absolute top-1/2 z-10 text-white rounded-full w-8 h-8 flex items-center justify-center animate-nav-button'
                     style={{
-                        background: "var(--background-backdrop, rgba(16, 17, 18, 0.4))",
+                        left: "-84px",
+                        background: "rgba(24, 26, 27, 1)",
+                        border: "1px solid rgba(255, 255, 255, 0.05)",
                     }}
+                    aria-label='Previous'
+                    title='Previous'
+                >
+                    <ArrowLeftIcon size={16} weight='bold' />
+                </button>
+            )}
+
+            {isActive && showNextButton && (
+                <button
+                    onClick={handleNext}
+                    className='absolute top-1/2 z-10 text-white rounded-full w-8 h-8 flex items-center justify-center animate-nav-button'
+                    style={{
+                        right: "-84px",
+                        background: "rgba(24, 26, 27, 1)",
+                        border: "1px solid rgba(255, 255, 255, 0.05)",
+                    }}
+                    aria-label='Next'
+                    title='Next'
+                >
+                    <ArrowRightIcon size={16} weight='bold' />
+                </button>
+            )}
+
+            {/* Inner container with overflow hidden for video content */}
+            <div className='relative w-full h-full overflow-hidden'>
+                {/* Video background */}
+                <video
+                    ref={videoRef}
+                    key={currentSubstory.id}
+                    loop={false}
+                    muted={isMuted}
+                    playsInline
+                    className='absolute inset-0 w-full h-full object-cover'
+                    src={currentSubstory.videoUrl}
                 />
-            )}
 
-            {/* Gradient overlays - only show for active story */}
-            {isActive && (
-                <>
+                {/* Dark overlay for non-active stories */}
+                {!isActive && (
                     <div
-                        className='absolute top-0 left-0 right-0 h-20 z-[1] pointer-events-none'
+                        className='absolute inset-0 z-[1] pointer-events-none'
                         style={{
-                            background:
-                                "linear-gradient(0deg, rgba(16, 17, 18, 0) 5.8%, #101112 65.63%)",
+                            background: "var(--background-backdrop, rgba(16, 17, 18, 0.4))",
                         }}
                     />
-                    <div
-                        className='absolute bottom-0 left-0 right-0 h-20 z-[1] pointer-events-none'
-                        style={{
-                            background:
-                                "linear-gradient(180deg, rgba(16, 17, 18, 0) 5.8%, #101112 65.63%)",
-                        }}
-                    />
-                </>
-            )}
+                )}
 
-            {/* Progress bars - only show for active story */}
-            {isActive && (
-                <div className='relative mt-4 mx-2 flex flex-row gap-3 z-10'>
-                    {story.substories.map((substory, index) => {
-                        const isCompleted = index < currentSubstoryIndex;
-                        const isCurrent = index === currentSubstoryIndex;
-                        const currentProgress = isCurrent ? progress : 0;
+                {/* Gradient overlays - only show for active story */}
+                {isActive && (
+                    <>
+                        <div
+                            className='absolute top-0 left-0 right-0 h-20 z-[1] pointer-events-none'
+                            style={{
+                                background:
+                                    "linear-gradient(0deg, rgba(16, 17, 18, 0) 5.8%, #101112 65.63%)",
+                            }}
+                        />
+                        <div
+                            className='absolute bottom-0 left-0 right-0 h-20 z-[1] pointer-events-none'
+                            style={{
+                                background:
+                                    "linear-gradient(180deg, rgba(16, 17, 18, 0) 5.8%, #101112 65.63%)",
+                            }}
+                        />
+                    </>
+                )}
 
-                        return (
-                            <div
-                                key={substory.id}
-                                className={`h-1 grow ${isCompleted ? "bg-white" : "bg-gray-500"} rounded-full overflow-hidden`}
-                            >
-                                {!isCompleted && (
-                                    <div
-                                        className='h-full bg-white rounded-full transition-all duration-100'
-                                        style={{ width: `${currentProgress}%` }}
-                                    />
-                                )}
-                            </div>
-                        );
-                    })}
-                </div>
-            )}
+                {/* Progress bars - only show for active story */}
+                {isActive && (
+                    <div className='relative mt-4 mx-2 flex flex-row gap-3 z-10'>
+                        {story.substories.map((substory, index) => {
+                            const isCompleted = index < currentSubstoryIndex;
+                            const isCurrent = index === currentSubstoryIndex;
+                            const currentProgress = isCurrent ? progress : 0;
 
-            {/* Video controls - only show for active story */}
-            {isActive && (
-                <div className='absolute top-5 right-4 flex gap-3 z-10'>
-                    <button
-                        onClick={togglePlayPause}
-                        className='text-white rounded-full p-2 hover:bg-black/70 transition'
-                        aria-label={isPlaying ? "Pause video" : "Play video"}
-                        title={isPlaying ? "Pause" : "Play"}
-                    >
-                        {isPlaying ? <Pause size={24} weight='regular' /> : <Play size={24} />}
-                    </button>
+                            return (
+                                <div
+                                    key={substory.id}
+                                    className={`h-1 grow ${isCompleted ? "bg-white" : "bg-gray-500"} rounded-full overflow-hidden`}
+                                >
+                                    {!isCompleted && (
+                                        <div
+                                            className='h-full bg-white rounded-full transition-all duration-100'
+                                            style={{ width: `${currentProgress}%` }}
+                                        />
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
 
-                    <button
-                        onClick={handleToggleMute}
-                        className='text-white rounded-full p-2 hover:bg-black/70 transition'
-                        aria-label={isMuted ? "Unmute video" : "Mute video"}
-                        title={isMuted ? "Unmute" : "Mute"}
-                    >
-                        {isMuted ? <SpeakerSlash size={24} /> : <SpeakerHigh size={24} />}
-                    </button>
-                </div>
-            )}
+                {/* Video controls - only show for active story */}
+                {isActive && (
+                    <div className='absolute top-5 right-4 flex gap-3 z-10'>
+                        <button
+                            onClick={togglePlayPause}
+                            className='text-white rounded-full p-2 hover:bg-black/70 transition'
+                            aria-label={isPlaying ? "Pause video" : "Play video"}
+                            title={isPlaying ? "Pause" : "Play"}
+                        >
+                            {isPlaying ? <Pause size={24} weight='regular' /> : <Play size={24} />}
+                        </button>
+
+                        <button
+                            onClick={handleToggleMute}
+                            className='text-white rounded-full p-2 hover:bg-black/70 transition'
+                            aria-label={isMuted ? "Unmute video" : "Mute video"}
+                            title={isMuted ? "Unmute" : "Mute"}
+                        >
+                            {isMuted ? <SpeakerSlash size={24} /> : <SpeakerHigh size={24} />}
+                        </button>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
