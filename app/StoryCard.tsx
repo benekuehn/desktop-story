@@ -275,6 +275,23 @@ export const StoryCard = ({
                     src={currentSubstory.videoUrl}
                 />
 
+                {/* Clickable overlay for play/pause - only for active story */}
+                {isActive && (
+                    <div
+                        className='absolute inset-0 z-[2] cursor-pointer'
+                        onClick={togglePlayPause}
+                        aria-label={isPlaying ? "Pause video" : "Play video"}
+                        role='button'
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                            if (e.key === " " || e.key === "Enter") {
+                                e.preventDefault();
+                                togglePlayPause();
+                            }
+                        }}
+                    />
+                )}
+
                 {/* Dark overlay for non-active stories */}
                 {!isActive && (
                     <div

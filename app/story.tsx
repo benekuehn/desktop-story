@@ -68,7 +68,7 @@ export const Story = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
     return (
         <dialog
             open={isOpen}
-            className='w-dvw h-dvh max-w-none max-h-none m-0 p-0 border-none'
+            className='w-dvw h-dvh max-w-none max-h-none m-0 p-0 border-none overflow-hidden'
             style={{ background: "var(--story-background)" }}
         >
             {/* Close button */}
