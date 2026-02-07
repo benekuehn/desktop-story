@@ -24,7 +24,7 @@ const NAV_BUTTON_OFFSET = 84;
 /**
  * Styled navigation button with animation.
  */
-function NavButton({ onClick, ariaLabel, position, children }: NavButtonProps) {
+const NavButton = ({ onClick, ariaLabel, position, children }: NavButtonProps) => {
     const positionStyle =
         position === "left"
             ? { left: `-${NAV_BUTTON_OFFSET}px` }
@@ -60,7 +60,7 @@ export interface PreviousButtonProps {
  * <StoryCard.PreviousButton iconSize={16} />
  * ```
  */
-export function PreviousButton({ iconSize = 16 }: PreviousButtonProps) {
+export const PreviousButton = ({ iconSize = 16 }: PreviousButtonProps) => {
     const { state, actions, meta } = useStoryCard();
     const { isActive } = state;
     const { canGoPrevious } = meta;
@@ -91,7 +91,7 @@ export interface NextButtonProps {
  * <StoryCard.NextButton iconSize={16} />
  * ```
  */
-export function NextButton({ iconSize = 16 }: NextButtonProps) {
+export const NextButton = ({ iconSize = 16 }: NextButtonProps) => {
     const { state, actions, meta } = useStoryCard();
     const { isActive } = state;
     const { canGoNext } = meta;
@@ -123,7 +123,7 @@ export interface NavigationButtonsProps {
  * <StoryCard.Navigation iconSize={16} />
  * ```
  */
-export function NavigationButtons({ iconSize = 16 }: NavigationButtonsProps) {
+export const NavigationButtons = ({ iconSize = 16 }: NavigationButtonsProps) => {
     return (
         <>
             <PreviousButton iconSize={iconSize} />

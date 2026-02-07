@@ -18,7 +18,7 @@ interface ProgressSegmentProps {
 /**
  * Individual progress segment for a substory.
  */
-function ProgressSegment({ isCompleted, isCurrent, progress }: ProgressSegmentProps) {
+const ProgressSegment = ({ isCompleted, isCurrent, progress }: ProgressSegmentProps) => {
     const currentProgress = isCurrent ? progress : 0;
 
     return (
@@ -59,7 +59,7 @@ export interface ProgressBarProps {
  * <StoryCard.Progress className="mt-4 mx-2" />
  * ```
  */
-export function ProgressBar({ className = "mt-4 mx-2" }: ProgressBarProps) {
+export const ProgressBar = ({ className = "mt-4 mx-2" }: ProgressBarProps) => {
     const { state } = useStoryCard();
     const { story, currentSubstoryIndex, progress, isActive } = state;
 

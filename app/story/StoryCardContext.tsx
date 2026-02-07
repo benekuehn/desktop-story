@@ -29,7 +29,7 @@ export const StoryCardContext = createContext<StoryCardContextValue | null>(null
 /**
  * Hook to access StoryCard context. Throws if used outside a StoryCard.Provider.
  */
-export function useStoryCard(): StoryCardContextValue {
+export const useStoryCard = (): StoryCardContextValue => {
     const context = use(StoryCardContext);
     if (!context) {
         throw new Error("useStoryCard must be used within a StoryCard.Provider");
@@ -54,7 +54,7 @@ const TRANSFORMS: Record<StoryCardPosition, string> = {
 /**
  * Calculate the CSS transform for a card position.
  */
-function getTransform(position: StoryCardPosition, isPressed: boolean): string {
+const getTransform = (position: StoryCardPosition, isPressed: boolean): string => {
     const baseTransform = TRANSFORMS[position];
 
     // Apply pressed scale effect for adjacent cards
@@ -67,7 +67,7 @@ function getTransform(position: StoryCardPosition, isPressed: boolean): string {
 /**
  * Calculate z-index based on position (closer to center = higher).
  */
-function getZIndex(position: StoryCardPosition): number {
+const getZIndex = (position: StoryCardPosition): number => {
     return 3 - Math.abs(position);
 }
 
@@ -94,7 +94,7 @@ interface StoryCardProviderProps extends StoryCardProps {
  * </StoryCard.Provider>
  * ```
  */
-export function StoryCardProvider({
+export const StoryCardProvider = ({
     story,
     position,
     isActive,
@@ -108,7 +108,7 @@ export function StoryCardProvider({
     canGoNext = true,
     onCardClick,
     children,
-}: StoryCardProviderProps) {
+}: StoryCardProviderProps) => {
     // Derive initial substory index based on navigation direction
     const initialIndex = startAtLastSubstory && isActive ? story.substories.length - 1 : 0;
 
@@ -139,6 +139,7 @@ export function StoryCardProvider({
         isActive,
         isMuted,
         onEnded: handleVideoEnded,
+        videoKey: currentSubstory.id,
     });
 
     // Navigation actions

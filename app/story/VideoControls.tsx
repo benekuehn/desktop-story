@@ -21,7 +21,7 @@ interface ControlButtonProps {
 /**
  * Styled control button for video controls.
  */
-function ControlButton({ onClick, ariaLabel, title, children }: ControlButtonProps) {
+const ControlButton = ({ onClick, ariaLabel, title, children }: ControlButtonProps) => {
     return (
         <button
             onClick={(e) => {
@@ -54,7 +54,7 @@ export interface PlayPauseButtonProps {
  * <PlayPauseButton size={24} />
  * ```
  */
-export function PlayPauseButton({ size = 24 }: PlayPauseButtonProps) {
+export const PlayPauseButton = ({ size = 24 }: PlayPauseButtonProps) => {
     const { state, actions } = useStoryCard();
     const { isPlaying } = state;
 
@@ -90,7 +90,7 @@ export interface MuteButtonProps {
  * <MuteButton size={24} />
  * ```
  */
-export function MuteButton({ size = 24 }: MuteButtonProps) {
+export const MuteButton = ({ size = 24 }: MuteButtonProps) => {
     const { state, actions } = useStoryCard();
     const { isMuted } = state;
 
@@ -133,12 +133,12 @@ export interface VideoControlsProps {
  * <StoryCard.Controls className="absolute top-6 right-3" />
  * ```
  */
-export function VideoControls({
+export const VideoControls = ({
     className = "absolute top-6 right-3",
     showPlayPause = true,
     showMute = true,
     iconSize = 24,
-}: VideoControlsProps) {
+}: VideoControlsProps) => {
     const { state } = useStoryCard();
     const { isActive, isHovered } = state;
 

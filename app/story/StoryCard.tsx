@@ -32,9 +32,18 @@ export interface VideoProps {
  * <StoryCard.Video className="absolute inset-0" />
  * ```
  */
-function Video({ className = "absolute inset-0 w-full h-full object-cover" }: VideoProps) {
+const Video = ({ className = "absolute inset-0 w-full h-full object-cover" }: VideoProps) => {
     const { state } = useStoryCard();
-    const { currentSubstory, isMuted, videoRef } = state;
+    const { currentSubstory, isMuted, isActive, videoRef } = state;
+
+    // Auto-play when video is ready (handles substory navigation)
+    const handleCanPlay = useCallback(() => {
+        if (isActive && videoRef.current) {
+            videoRef.current.play().catch(() => {
+                // Ignore autoplay errors (browser policy)
+            });
+        }
+    }, [isActive, videoRef]);
 
     return (
         <video
@@ -45,6 +54,7 @@ function Video({ className = "absolute inset-0 w-full h-full object-cover" }: Vi
             playsInline
             className={className}
             src={currentSubstory.videoUrl}
+            onCanPlay={handleCanPlay}
         />
     );
 }
@@ -57,7 +67,7 @@ function Video({ className = "absolute inset-0 w-full h-full object-cover" }: Vi
  * Invisible overlay for play/pause on click.
  * Only renders for active stories.
  */
-function ClickOverlay() {
+const ClickOverlay = () => {
     const { state, actions } = useStoryCard();
     const { isActive, isPlaying } = state;
 
@@ -89,7 +99,7 @@ function ClickOverlay() {
 /**
  * Dark overlay for inactive stories.
  */
-function InactiveOverlay() {
+const InactiveOverlay = () => {
     const { state } = useStoryCard();
 
     if (state.isActive) return null;
@@ -107,7 +117,7 @@ function InactiveOverlay() {
 /**
  * Gradient overlays for active stories (top and bottom).
  */
-function GradientOverlays() {
+const GradientOverlays = () => {
     const { state } = useStoryCard();
 
     if (!state.isActive) return null;
@@ -151,7 +161,7 @@ export interface FrameProps {
  * </StoryCard.Frame>
  * ```
  */
-function Frame({ children }: FrameProps) {
+const Frame = ({ children }: FrameProps) => {
     const { actions, meta } = useStoryCard();
     const { isClickable, zIndex, transform } = meta;
 
@@ -214,7 +224,7 @@ function Frame({ children }: FrameProps) {
  * </StoryCard.Provider>
  * ```
  */
-function DefaultLayout() {
+const DefaultLayout = () => {
     return (
         <Frame>
             <Video />
@@ -256,7 +266,7 @@ function DefaultLayout() {
  * </StoryCard.Provider>
  * ```
  */
-function StoryCardRoot(props: StoryCardProps) {
+const StoryCardRoot = (props: StoryCardProps) => {
     return (
         <StoryCardProvider {...props}>
             <DefaultLayout />

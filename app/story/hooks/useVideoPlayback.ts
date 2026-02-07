@@ -40,6 +40,8 @@ export interface UseVideoPlaybackOptions {
     onEnded?: () => void;
     /** Callback when progress updates */
     onProgress?: (progress: number) => void;
+    /** Unique key for the current video (resets progress when changed) */
+    videoKey?: string | number;
 }
 
 /**
@@ -64,15 +66,16 @@ export interface UseVideoPlaybackOptions {
  * );
  * ```
  */
-export function useVideoPlayback({
+export const useVideoPlayback = ({
     isActive,
     isMuted,
     onEnded,
     onProgress,
+    videoKey,
 }: UseVideoPlaybackOptions): {
     state: VideoPlaybackState;
     actions: VideoPlaybackActions;
-} {
+} => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -127,6 +130,11 @@ export function useVideoPlayback({
         }
         setProgress(0);
     }, []);
+
+    // Reset progress when video key changes (new substory)
+    useEffect(() => {
+        setProgress(0);
+    }, [videoKey]);
 
     // Auto-play/pause based on isActive
     useEffect(() => {
