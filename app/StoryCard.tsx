@@ -39,13 +39,13 @@ export const StoryCard = ({
     // Position-based transforms
     const getTransform = () => {
         const transforms = {
-            "-3": "translateX(-1094px) scale(0.7)",
-            "-2": "translateX(-781px) scale(0.7)",
-            "-1": "translateX(-468px) scale(0.7)",
+            "-3": "translateX(-996px) scale(0.6)",
+            "-2": "translateX(-722px) scale(0.6)",
+            "-1": "translateX(-448px) scale(0.6)",
             "0": "translateX(0) scale(1)",
-            "1": "translateX(468px) scale(0.7)",
-            "2": "translateX(781px) scale(0.7)",
-            "3": "translateX(1094px) scale(0.7)",
+            "1": "translateX(448px) scale(0.6)",
+            "2": "translateX(722px) scale(0.6)",
+            "3": "translateX(996px) scale(0.6)",
         };
         return transforms[position.toString() as keyof typeof transforms];
     };
@@ -256,7 +256,6 @@ export const StoryCard = ({
                     </button>
                 </div>
             )}
-
         </div>
     );
 };
