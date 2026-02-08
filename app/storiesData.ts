@@ -8,13 +8,13 @@ export type Story = {
     substories: Substory[];
 };
 
-export const stories: Story[] = [
+export const videoStories: Story[] = [
     {
         id: 1,
         substories: [
             {
                 id: 1,
-                videoUrl: "/stories/bangkok/1.mov",
+                videoUrl: "/stories/videos/bangkok/1.mov",
             },
         ],
     },
@@ -23,19 +23,19 @@ export const stories: Story[] = [
         substories: [
             {
                 id: 1,
-                videoUrl: "/stories/basketball/1.mov",
+                videoUrl: "/stories/videos/basketball/1.mov",
             },
             {
                 id: 2,
-                videoUrl: "/stories/basketball/2.mov",
+                videoUrl: "/stories/videos/basketball/2.mov",
             },
             {
                 id: 3,
-                videoUrl: "/stories/basketball/3.mov",
+                videoUrl: "/stories/videos/basketball/3.mov",
             },
             {
                 id: 4,
-                videoUrl: "/stories/basketball/4.mov",
+                videoUrl: "/stories/videos/basketball/4.mov",
             },
         ],
     },
@@ -44,7 +44,7 @@ export const stories: Story[] = [
         substories: [
             {
                 id: 1,
-                videoUrl: "/stories/lake/1.webm",
+                videoUrl: "/stories/videos/lake/1.webm",
             },
         ],
     },
@@ -53,15 +53,15 @@ export const stories: Story[] = [
         substories: [
             {
                 id: 1,
-                videoUrl: "/stories/sailing/1.mov",
+                videoUrl: "/stories/videos/sailing/1.mov",
             },
             {
                 id: 2,
-                videoUrl: "/stories/sailing/2.mov",
+                videoUrl: "/stories/videos/sailing/2.mov",
             },
             {
                 id: 3,
-                videoUrl: "/stories/sailing/3.mov",
+                videoUrl: "/stories/videos/sailing/3.mov",
             },
         ],
     },
@@ -70,15 +70,15 @@ export const stories: Story[] = [
         substories: [
             {
                 id: 1,
-                videoUrl: "/stories/ski/1.webm",
+                videoUrl: "/stories/videos/ski/1.webm",
             },
             {
                 id: 2,
-                videoUrl: "/stories/ski/2.webm",
+                videoUrl: "/stories/videos/ski/2.webm",
             },
             {
                 id: 3,
-                videoUrl: "/stories/ski/3.mov",
+                videoUrl: "/stories/videos/ski/3.mov",
             },
         ],
     },
@@ -87,11 +87,11 @@ export const stories: Story[] = [
         substories: [
             {
                 id: 1,
-                videoUrl: "/stories/waterfall/1.webm",
+                videoUrl: "/stories/videos/waterfall/1.webm",
             },
             {
                 id: 2,
-                videoUrl: "/stories/waterfall/2.mov",
+                videoUrl: "/stories/videos/waterfall/2.mov",
             },
         ],
     },

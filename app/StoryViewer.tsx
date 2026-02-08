@@ -2,7 +2,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { X } from "@phosphor-icons/react";
 import { StoryCard, type StoryCardPosition } from "./story";
-import { stories, type Story as StoryType } from "./storiesData";
+import { videoStories, type Story as StoryType } from "./storiesData";
 
 /** Visible story with position and navigation context */
 interface VisibleStory {
@@ -29,6 +29,7 @@ interface StoryProps {
  * ```
  */
 export const StoryViewer = ({ isOpen, onClose }: StoryProps) => {
+    const stories = videoStories;
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isMuted, setIsMuted] = useState(true);
     const [navigationDirection, setNavigationDirection] = useState<"forward" | "backward" | null>(
@@ -43,7 +44,7 @@ export const StoryViewer = ({ isOpen, onClose }: StoryProps) => {
             }
             return index;
         });
-    }, []);
+    }, [stories.length]);
 
     const goPreviousStory = useCallback(() => {
         setCurrentIndex((index) => {
@@ -79,7 +80,7 @@ export const StoryViewer = ({ isOpen, onClose }: StoryProps) => {
         }
 
         return visible;
-    }, [currentIndex, navigationDirection]);
+    }, [currentIndex, navigationDirection, stories]);
 
     // Derived navigation availability
     const canGoPrevious = currentIndex > 0;
