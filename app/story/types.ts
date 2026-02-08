@@ -114,6 +114,10 @@ export interface StoryCardActions {
     goPrevious: () => void;
     /** Go to next substory or story */
     goNext: () => void;
+    /** Jump to previous story (skip substories) */
+    goPreviousStory: () => void;
+    /** Jump to next story (skip substories) */
+    goNextStory: () => void;
     /** Set hover state */
     setHovered: (hovered: boolean) => void;
     /** Set pressed state */
@@ -128,6 +132,10 @@ export interface StoryCardMeta {
     canGoPrevious: boolean;
     /** Whether there's a next substory or story */
     canGoNext: boolean;
+    /** Whether there's a previous story (story-level, ignoring substories) */
+    canGoPreviousStory: boolean;
+    /** Whether there's a next story (story-level, ignoring substories) */
+    canGoNextStory: boolean;
     /** Whether the card is clickable (adjacent to active) */
     isClickable: boolean;
     /** Computed z-index based on position */

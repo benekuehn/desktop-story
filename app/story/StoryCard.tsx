@@ -5,6 +5,7 @@ import { StoryCardProvider, useStoryCard } from "./StoryCardContext";
 import { ProgressBar } from "./ProgressBar";
 import { VideoControls, PlayPauseButton, MuteButton } from "./VideoControls";
 import { NavigationButtons, PreviousButton, NextButton } from "./NavigationButtons";
+import { useKeyboardNavigation } from "./hooks";
 import type { StoryCardProps } from "./types";
 
 // ============================================================================
@@ -142,6 +143,39 @@ const GradientOverlays = () => {
 };
 
 // ============================================================================
+// Keyboard Navigation Component
+// ============================================================================
+
+/**
+ * Keyboard navigation handler for story navigation.
+ * Only active when the story card is focused/active.
+ *
+ * - Left/Right: navigate between substories
+ * - Up/Down: jump to previous/next story (skip substories)
+ */
+const KeyboardNavigation = () => {
+    const { state, actions, meta } = useStoryCard();
+
+    useKeyboardNavigation({
+        isEnabled: state.isActive,
+        actions: {
+            goPrevious: actions.goPrevious,
+            goNext: actions.goNext,
+            goPreviousStory: actions.goPreviousStory,
+            goNextStory: actions.goNextStory,
+        },
+        meta: {
+            canGoPrevious: meta.canGoPrevious,
+            canGoNext: meta.canGoNext,
+            canGoPreviousStory: meta.canGoPreviousStory,
+            canGoNextStory: meta.canGoNextStory,
+        },
+    });
+
+    return null;
+};
+
+// ============================================================================
 // Frame Component
 // ============================================================================
 
@@ -233,6 +267,7 @@ const DefaultLayout = () => {
             <GradientOverlays />
             <ProgressBar />
             <VideoControls />
+            <KeyboardNavigation />
         </Frame>
     );
 };
@@ -323,6 +358,8 @@ export const StoryCard = Object.assign(StoryCardRoot, {
     PreviousButton,
     /** Next button only */
     NextButton,
+    /** Keyboard navigation handler */
+    KeyboardNavigation,
     /** Default layout component */
     DefaultLayout,
 });

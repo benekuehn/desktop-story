@@ -4,3 +4,5 @@ export type {
     VideoPlaybackActions,
     UseVideoPlaybackOptions,
 } from "./useVideoPlayback";
+
+export { useKeyboardNavigation } from "./useKeyboardNavigation";

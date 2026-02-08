@@ -163,6 +163,17 @@ export const StoryCardProvider = ({
         }
     }, [isActive, currentSubstoryIndex, story.substories.length, videoActions, onGoNext]);
 
+    // Story-level navigation (skip substories, for Up/Down keyboard nav)
+    const goPreviousStory = useCallback(() => {
+        if (!isActive || !canGoPrevious) return;
+        onGoPrevious?.();
+    }, [isActive, canGoPrevious, onGoPrevious]);
+
+    const goNextStory = useCallback(() => {
+        if (!isActive || !canGoNext) return;
+        onGoNext?.();
+    }, [isActive, canGoNext, onGoNext]);
+
     const toggleMute = useCallback(() => {
         if (!isActive) return;
         onToggleMute();
@@ -173,6 +184,8 @@ export const StoryCardProvider = ({
         () => ({
             canGoPrevious: currentSubstoryIndex > 0 || canGoPrevious,
             canGoNext: currentSubstoryIndex < story.substories.length - 1 || canGoNext,
+            canGoPreviousStory: canGoPrevious,
+            canGoNextStory: canGoNext,
             isClickable: !isActive && (position === -1 || position === 1),
             zIndex: getZIndex(position),
             transform: getTransform(position, isPressed),
@@ -227,6 +240,8 @@ export const StoryCardProvider = ({
                 toggleMute,
                 goPrevious,
                 goNext,
+                goPreviousStory,
+                goNextStory,
                 setHovered,
                 setPressed: handleSetPressed,
             },
@@ -248,6 +263,8 @@ export const StoryCardProvider = ({
             toggleMute,
             goPrevious,
             goNext,
+            goPreviousStory,
+            goNextStory,
             setHovered,
             handleSetPressed,
             meta,
