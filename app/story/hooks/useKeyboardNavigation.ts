@@ -13,7 +13,10 @@ interface UseKeyboardNavigationOptions {
     /** Navigation actions from StoryCard context */
     actions: Pick<StoryCardActions, "goPrevious" | "goNext" | "goPreviousStory" | "goNextStory">;
     /** Navigation availability metadata */
-    meta: Pick<StoryCardMeta, "canGoPrevious" | "canGoNext" | "canGoPreviousStory" | "canGoNextStory">;
+    meta: Pick<
+        StoryCardMeta,
+        "canGoPrevious" | "canGoNext" | "canGoPreviousStory" | "canGoNextStory"
+    >;
 }
 
 // ============================================================================
@@ -46,7 +49,11 @@ export const useKeyboardNavigation = ({
         const handleKeyDown = (event: KeyboardEvent) => {
             // Ignore if user is typing in an input
             const target = event.target as HTMLElement;
-            if (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable) {
+            if (
+                target.tagName === "INPUT" ||
+                target.tagName === "TEXTAREA" ||
+                target.isContentEditable
+            ) {
                 return;
             }
 

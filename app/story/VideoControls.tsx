@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { Play, Pause, SpeakerHigh, SpeakerSlash } from "@phosphor-icons/react";
 import { useStoryCard } from "./StoryCardContext";
 
@@ -16,14 +17,17 @@ interface ControlButtonProps {
     title: string;
     /** Button content */
     children: React.ReactNode;
+    /** Ref for the button element */
+    buttonRef?: React.RefObject<HTMLButtonElement | null>;
 }
 
 /**
  * Styled control button for video controls.
  */
-const ControlButton = ({ onClick, ariaLabel, title, children }: ControlButtonProps) => {
+const ControlButton = ({ onClick, ariaLabel, title, children, buttonRef }: ControlButtonProps) => {
     return (
         <button
+            ref={buttonRef}
             onClick={(e) => {
                 e.stopPropagation();
                 onClick();
@@ -56,10 +60,19 @@ export interface PlayPauseButtonProps {
  */
 export const PlayPauseButton = ({ size = 24 }: PlayPauseButtonProps) => {
     const { state, actions } = useStoryCard();
-    const { isPlaying } = state;
+    const { isPlaying, isActive } = state;
+    const buttonRef = useRef<HTMLButtonElement>(null);
+
+    // Auto-focus when story becomes active for keyboard accessibility
+    useEffect(() => {
+        if (isActive) {
+            buttonRef.current?.focus();
+        }
+    }, [isActive]);
 
     return (
         <ControlButton
+            buttonRef={buttonRef}
             onClick={actions.togglePlayPause}
             ariaLabel={isPlaying ? "Pause video" : "Play video"}
             title={isPlaying ? "Pause" : "Play"}
@@ -126,7 +139,7 @@ export interface VideoControlsProps {
 
 /**
  * Video control overlay with play/pause and mute buttons.
- * Only visible when the story is active and hovered.
+ * Visible when the story is active and either hovered or paused.
  *
  * @example
  * ```tsx
@@ -140,15 +153,18 @@ export const VideoControls = ({
     iconSize = 24,
 }: VideoControlsProps) => {
     const { state } = useStoryCard();
-    const { isActive, isHovered } = state;
+    const { isActive, isHovered, isPlaying } = state;
 
     // Only show for active story
     if (!isActive) return null;
 
+    // Show controls when hovered or when video is paused
+    const isVisible = isHovered || !isPlaying;
+
     return (
         <div
             className={`flex gap-2 z-10 transition-opacity duration-200 ${
-                isHovered ? "opacity-100" : "opacity-0"
+                isVisible ? "opacity-100" : "opacity-0"
             } ${className}`}
         >
             {showPlayPause && <PlayPauseButton size={iconSize} />}
