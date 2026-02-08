@@ -229,16 +229,20 @@ const Frame = ({ children }: FrameProps) => {
             }}
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
             onTouchStart={handleMouseDown}
             onTouchEnd={handleMouseUp}
         >
             {/* Navigation buttons outside content overflow */}
             <NavigationButtons />
 
-            {/* Inner container with overflow hidden */}
-            <div className='relative w-full h-full overflow-hidden'>{children}</div>
+            {/* Inner container with overflow hidden - hover detection only here */}
+            <div
+                className='relative w-full h-full overflow-hidden'
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+            >
+                {children}
+            </div>
         </div>
     );
 };
