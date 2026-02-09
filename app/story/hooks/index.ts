@@ -6,3 +6,5 @@ export type {
 } from "./useVideoPlayback";
 
 export { useKeyboardNavigation } from "./useKeyboardNavigation";
+
+export { useStoryPreload } from "./useStoryPreload";

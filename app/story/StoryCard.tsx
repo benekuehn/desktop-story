@@ -52,6 +52,7 @@ const Video = ({ className = "absolute inset-0 w-full h-full object-cover" }: Vi
             key={currentSubstory.id}
             loop={false}
             muted={isMuted}
+            preload='auto'
             playsInline
             className={className}
             src={currentSubstory.videoUrl}

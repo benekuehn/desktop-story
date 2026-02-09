@@ -2,6 +2,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { X } from "@phosphor-icons/react";
 import { StoryCard, type StoryCardPosition } from "./story";
+import { useStoryPreload } from "./story/hooks";
 import { videoStories, type Story as StoryType } from "./storiesData";
 
 /** Visible story with position and navigation context */
@@ -35,6 +36,14 @@ export const StoryViewer = ({ isOpen, onClose }: StoryProps) => {
     const [navigationDirection, setNavigationDirection] = useState<"forward" | "backward" | null>(
         null,
     );
+
+    const allVideoUrls = useMemo(
+        () => stories.flatMap((story) => story.substories.map((substory) => substory.videoUrl)),
+        [stories],
+    );
+
+    // Preload everything up-front to make story transitions instant.
+    useStoryPreload(allVideoUrls);
 
     const goNextStory = useCallback(() => {
         setCurrentIndex((index) => {
